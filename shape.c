@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 13:50:13 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/16 15:57:56 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/16 17:11:43 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,7 @@ unsigned short		str_to_shape(char *data)
 	while (i < 16)
 	{
 		shape <<= 1;
-		if (data[i] == '#')
-			shape |= 1;
+		shape |= (data[i] == '#');
 		i++;
 	}
 	return (shape);
@@ -97,6 +96,10 @@ int					identify(char *data)
 
 	if (data == NULL)
 		return (-2);
+	i = -1;
+	while (++i < 16)
+		if (data[i] != '.' && data[i] != '#')
+			return (-2);
 	shape = str_to_shape(data);
 	i = 0;
 	while (!(shape & SHAPE_ROW1) && i++ < 4)
@@ -110,3 +113,27 @@ int					identify(char *data)
 			return (i);
 	return (-1);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
