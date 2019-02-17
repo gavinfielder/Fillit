@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tetrimino.c                                        :+:      :+:    :+:   */
+/*   ft_memdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/16 15:54:44 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:24:15 by gfielder         ###   ########.fr       */
+/*   Created: 2019/02/13 09:06:09 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/13 09:17:31 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetrimino.h"
-#include "shape.h"
+#include <stdlib.h>
 
-void				set_pos(unsigned short *tet,
-						unsigned short x, unsigned short y)
+void	ft_memdel(void **ap)
 {
-	*tet &= ~TET_X_MASK;
-	*tet &= ~TET_Y_MASK;
-	*tet |= (x << TET_X_SHFT);
-	*tet |= (y << TET_Y_SHFT);
+	if (ap == NULL || *ap == NULL)
+		return ;
+	free(*ap);
+	*ap = NULL;
 }

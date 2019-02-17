@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tetrimino.c                                        :+:      :+:    :+:   */
+/*   ft_strsub.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/16 15:54:44 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:24:15 by gfielder         ###   ########.fr       */
+/*   Created: 2019/02/13 09:56:07 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/15 18:40:38 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetrimino.h"
-#include "shape.h"
+#include <string.h>
+#include "libft.h"
 
-void				set_pos(unsigned short *tet,
-						unsigned short x, unsigned short y)
+char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
-	*tet &= ~TET_X_MASK;
-	*tet &= ~TET_Y_MASK;
-	*tet |= (x << TET_X_SHFT);
-	*tet |= (y << TET_Y_SHFT);
+	char			*r;
+	unsigned int	i;
+
+	if (s == NULL)
+		return (NULL);
+	r = ft_strnew(len);
+	if (r == NULL)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		r[i] = s[start + i];
+		i++;
+	}
+	return (r);
 }

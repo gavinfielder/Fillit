@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tetrimino.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/16 15:54:44 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:24:15 by gfielder         ###   ########.fr       */
+/*   Created: 2019/02/13 13:53:09 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/15 18:15:19 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetrimino.h"
-#include "shape.h"
+#include <string.h>
+#include "libft.h"
 
-void				set_pos(unsigned short *tet,
-						unsigned short x, unsigned short y)
+void	ft_lstadd(t_list **alst, t_list *new_elem)
 {
-	*tet &= ~TET_X_MASK;
-	*tet &= ~TET_Y_MASK;
-	*tet |= (x << TET_X_SHFT);
-	*tet |= (y << TET_Y_SHFT);
+	new_elem->next = *alst;
+	*alst = new_elem;
 }

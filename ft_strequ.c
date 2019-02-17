@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tetrimino.c                                        :+:      :+:    :+:   */
+/*   ft_strequ.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/16 15:54:44 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:24:15 by gfielder         ###   ########.fr       */
+/*   Created: 2019/02/13 09:49:14 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/15 18:32:33 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetrimino.h"
-#include "shape.h"
+#include <string.h>
 
-void				set_pos(unsigned short *tet,
-						unsigned short x, unsigned short y)
+int		ft_strequ(char const *s1, char const *s2)
 {
-	*tet &= ~TET_X_MASK;
-	*tet &= ~TET_Y_MASK;
-	*tet |= (x << TET_X_SHFT);
-	*tet |= (y << TET_Y_SHFT);
+	int	value;
+	int i;
+
+	if (s1 == NULL && s2 == NULL)
+		return (1);
+	if (s1 == NULL || s2 == NULL)
+		return (0);
+	value = 0;
+	i = 0;
+	while (value == 0 && (s1[i] || s2[i]))
+	{
+		value += ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	if (value)
+		return (0);
+	else
+		return (1);
 }

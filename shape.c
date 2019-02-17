@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 13:50:13 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/16 17:11:43 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/17 13:20:50 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,32 @@ unsigned short		overlaps(unsigned short tet1, unsigned short tet2)
 {
 	unsigned short	tet1_dim;
 	unsigned short	tet2_dim;
+	unsigned short	tet1_shape;
+	unsigned short	tet2_shape;
 
 	tet1_dim = TET_GET_X(tet1);
 	tet2_dim = TET_GET_X(tet2);
+	tet1_shape = g_shapes[tet1 & TET_ID_MASK];
+	tet2_shape = g_shapes[tet2 & TET_ID_MASK];
 	if (tet1_dim > tet2_dim)
 	{
-		tet2 = horiz_shift(tet2, tet1_dim - tet2_dim);
-		if (!tet2)
+		tet1_shape = horiz_shift(tet1_shape, tet1_dim - tet2_dim);
+		if (!tet1_shape)
 			return (0);
 	}
 	else
 	{
-		tet1 = horiz_shift(tet1, tet2_dim - tet1_dim);
-		if (!tet1)
+		tet2_shape = horiz_shift(tet2_shape, tet2_dim - tet1_dim);
+		if (!tet2_shape)
 			return (0);
 	}
 	tet1_dim = TET_GET_Y(tet1);
 	tet2_dim = TET_GET_Y(tet2);
 	if (tet1_dim > tet2_dim)
-		tet2 = vert_shift(tet2, tet1_dim - tet2_dim);
+		tet1_shape = vert_shift(tet1_shape, tet1_dim - tet2_dim);
 	else
-		tet1 = vert_shift(tet1, tet2_dim - tet1_dim);
-	return (tet1 & tet2);
+		tet2_shape = vert_shift(tet2_shape, tet2_dim - tet1_dim);
+	return (tet1_shape & tet2_shape);
 }
 
 unsigned short		str_to_shape(char *data)
@@ -113,27 +117,3 @@ int					identify(char *data)
 			return (i);
 	return (-1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
