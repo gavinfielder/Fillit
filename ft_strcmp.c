@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tetrimino.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/16 15:54:44 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:24:15 by gfielder         ###   ########.fr       */
+/*   Created: 2018/09/24 14:33:12 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/11 15:43:18 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetrimino.h"
-#include "shape.h"
-
-void				set_pos(unsigned short *tet,
-						unsigned short x, unsigned short y)
+int		ft_strcmp(const char *s1, const char *s2)
 {
-	*tet &= ~TET_X_MASK;
-	*tet &= ~TET_Y_MASK;
-	*tet |= (x << TET_X_SHFT);
-	*tet |= (y << TET_Y_SHFT);
+	int	value;
+	int i;
+
+	value = 0;
+	i = 0;
+	while (value == 0 && (s1[i] || s2[i]))
+	{
+		value += ((unsigned char)s1[i] - (unsigned char)s2[i]);
+		i++;
+	}
+	return (value);
 }

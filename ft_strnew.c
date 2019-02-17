@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tetrimino.c                                        :+:      :+:    :+:   */
+/*   ft_strnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/16 15:54:44 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:24:15 by gfielder         ###   ########.fr       */
+/*   Created: 2019/02/13 09:17:58 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/13 17:24:26 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetrimino.h"
-#include "shape.h"
+#include <stdlib.h>
 
-void				set_pos(unsigned short *tet,
-						unsigned short x, unsigned short y)
+char	*ft_strnew(size_t size)
 {
-	*tet &= ~TET_X_MASK;
-	*tet &= ~TET_Y_MASK;
-	*tet |= (x << TET_X_SHFT);
-	*tet |= (y << TET_Y_SHFT);
+	size_t	i;
+	char	*str;
+
+	str = (char *)malloc(size + 1);
+	if (str == NULL)
+		return (NULL);
+	i = 0;
+	while (i <= size)
+	{
+		str[i] = 0;
+		i++;
+	}
+	return (str);
 }

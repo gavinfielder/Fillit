@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tetrimino.c                                        :+:      :+:    :+:   */
+/*   ft_lstnew_byref.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/16 15:54:44 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:24:15 by gfielder         ###   ########.fr       */
+/*   Created: 2019/02/13 14:24:49 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/13 14:51:22 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetrimino.h"
-#include "shape.h"
+#include <stdlib.h>
+#include "libft.h"
 
-void				set_pos(unsigned short *tet,
-						unsigned short x, unsigned short y)
+t_list	*ft_lstnew_byref(void const *content, size_t content_size)
 {
-	*tet &= ~TET_X_MASK;
-	*tet &= ~TET_Y_MASK;
-	*tet |= (x << TET_X_SHFT);
-	*tet |= (y << TET_Y_SHFT);
+	t_list	*lst;
+
+	lst = (t_list *)malloc(sizeof(t_list));
+	if (lst == NULL)
+		return (NULL);
+	if (content == NULL)
+	{
+		lst->content = NULL;
+		lst->content_size = 0;
+	}
+	else
+	{
+		lst->content_size = content_size;
+		lst->content = (void *)content;
+	}
+	lst->next = NULL;
+	return (lst);
 }

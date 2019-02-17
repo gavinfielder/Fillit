@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tetrimino.c                                        :+:      :+:    :+:   */
+/*   output.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/16 15:54:44 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:24:15 by gfielder         ###   ########.fr       */
+/*   Created: 2019/02/17 13:03:24 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/17 15:00:01 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tetrimino.h"
-#include "shape.h"
+#ifndef OUTPUT_H
+# define OUTPUT_H
 
-void				set_pos(unsigned short *tet,
-						unsigned short x, unsigned short y)
-{
-	*tet &= ~TET_X_MASK;
-	*tet &= ~TET_Y_MASK;
-	*tet |= (x << TET_X_SHFT);
-	*tet |= (y << TET_Y_SHFT);
-}
+void	write_tet_to_square(unsigned short tet, unsigned char square_size,
+			char *square, char tet_letter);
+void	print_square(unsigned short *tets, unsigned char num_tets,
+			unsigned char square_size);
+
+#endif
