@@ -1,88 +1,80 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   input.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/16 17:02:49 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/16 17:35:55 by gfielder         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <sys/types.h>
 #include <sys/uio.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "shape.h"
+#include "test_functions.h"
 
-int     ft_strlen(char *str)
+int		get_next_tet(int fd)
 {
-    int len = 0;
-
-    while (*str++)
-        len++;
-    return (len);
-}
-
-
-/* 
-** identify() takes input string of '.'s and '#'s
-** and returns id (0 - 18) of respective
-** tetrimino, -2 when finished identifying all tetriminoes,
-** and -1 for error
-*/
-
-int     identify(char *data)
-{
-    if (ft_strlen(data) == 16)
-        return (1);
-    return (-1);
-}
-
-
-char    *get_nth_tet(int fd, int n) // n is zero based
-{
-    char *curr;
-    char *ret_tet;
-    char *head;
+    char buff[21];
+    char ret_tet[16];
     int ret;
+	int i;
 
-    if (n < 0)
-        return (NULL);
-    n++;
-    while (n--)
+    if ((ret = read(fd, buff, 21)) == 0)
+		return (-1);
+	else if (ret == -1)
+		return (-2);
+	else if (ret < 19)
+		return (-2);
+	i = -1;
+    while (++i < ret) //loop through all the read buffer
     {
-        if (!(ret = read(fd, curr, 21)))
-            return (NULL);
-        curr[ret] = '\0';
-    }
-    if (!(ret_tet = (char *)malloc(sizeof(char) * 17)))
-        return (NULL);
-    head = ret_tet;
-    while (++n < 21)
-    {
-        if (*curr == '\n')
+        if ((i + 1) % 5 == 0) //on i = 4,9,14,19 validate that the character is \n
         {
-            curr++;
+			if (buff[i] != '\n')
+				return (-2);
             continue;
         }
-        *ret_tet = *curr;
-        ret_tet++;
-        curr++; 
+        ret_tet[i - (i + 1) / 5] = buff[i]; //on all other values, copy to ret_tet
     }
-    *curr = '\0';
-    *ret_tet = '\0';
-    printf("nth_tet\n%s\n", head);
-    return (head);    
+	if (ret == 21 && buff[20] != '\n') //validate that there is an extra newline after the tetrimino, if it has not ended
+		return (-2);
+	//ret_tet now holds the valid number of character in the valid organization
+	return (identify(ret_tet));
 }
 
 int     main(int ac, char **av)
 {
     int fd;
     int n;
+	int id;
+	unsigned short arr[26];
 
     if (ac != 2)
         return (0);
     fd = open(av[1], O_RDONLY);
-    printf("identify_ret: %d\n", identify(get_nth_tet(fd, 3)));
-    
-    // while ((id = identify(get_nth_tet(fd, n))) >= 0);
-    // {
-    //     arr[n++] = id;
-    // }
-    // if (id == -1)
-    //     return (error());
-    
-    return (0);
+    n = 0;
+	printf("62\n");
+    while ((id = get_next_tet(fd)) >= 0)
+    {
+		printf("n=%i\n", n);
+        arr[n++] = id;
+		if (id < 0)
+		{
+			if (id == -1)
+   	    		printf("unrecognized tetrimino\n");
+			else if (id == -2)
+				printf("error\n");
+		}
+		printf("identified shape id=%i\n", id);
+		print_shape(g_shapes[id]);
+		printf("\n");
+    }
+	return (0);
 }
-

@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 13:49:59 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/16 15:58:16 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/16 17:08:18 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define TET_GET_Y(T) ((T & TET_Y_MASK) >> TET_Y_SHFT)
 # define SHAPE_ROW1 0xF000
 # define SHAPE_COL1 0x8888
+# define SHAPE_ERROR 0xFFFF
 
 extern const unsigned short	g_shapes[];
 

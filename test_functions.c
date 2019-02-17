@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 14:44:56 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/16 15:53:50 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/16 17:30:21 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	run_identity_tests()
 	test_identify("......##..#...#.");
 
 }
-
+/*
 int		main(int argc, char **argv)
 {
 	int id = -1;
@@ -72,7 +72,7 @@ int		main(int argc, char **argv)
 
 	run_identity_tests();
 
-	/*
+	/ *
 	if (argc > 3)
 	{
 		id = atoi(argv[1]);
@@ -83,9 +83,9 @@ int		main(int argc, char **argv)
 		printf("Printing shape #%i, shifted by x=%i, y=%i.\n", id, x, y);
 		print_shape(vert_shift(horiz_shift(g_shapes[id], x), y));
 	}
-	*/
+	* /
 	return (0);
-}
+} */
 
 
 
