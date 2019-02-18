@@ -1,0 +1,27 @@
+silent
+# This comment is not sent to stdout as long as the silent option is specified
+# The @ comments are printed to stdout, though.
+/
+/
+@ This is a basic setup script.
+/
+# The / commands simply print a newline to stdout
+/
+reset
+size 8
+set a 15 6 3
+set b 14 3 5
+set c 17 6 2
+set d 2 0 1
+print
+overlaps all
+/
+@ Now we'll add an overlapping piece...
+/
+set e 0 0 7
+print
+overlaps all
+/
+@ This concludes the demo.
+/
+help

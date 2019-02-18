@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 17:04:32 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 21:45:12 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/17 22:48:05 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include "testing.h"
 #include "libft.h"
+#include "input.h"
 
 static unsigned short	g_tets[26];
 static unsigned short	grid_size;
@@ -53,6 +54,7 @@ void	cmd_help()
 	printf("    set [index] [id] [x] [y]	set tet[index] to the specified id and position\n");
 	printf("    move [index] [x] [y]	moves the given tetrimino by the requested amount\n");
 	printf("    show [index]		print information about the given tetrimino\n");
+	printf("    rf [filename]		reads tetriminos from file\n");
 	printf("    size [size]			set the grid size\n");
 	printf("    print / p			print the grid\n");
 	printf("    del [index]			delete the given tetrimino\n");
@@ -87,6 +89,8 @@ int		process_cmd(char **words)
 		cmd_print();
 	else if (ft_strequ(words[0], "del"))
 		cmd_del(idx_atoi(words[1]));
+	else if (ft_strequ(words[0], "rf"))
+		cmd_rf(words[1]);
 	else if (ft_strnequ(words[0], "reset", 5))
 		cmd_reset();
 	else if (ft_strequ(words[0], "move"))
@@ -133,6 +137,7 @@ int		process_stdin(void)
 	for (int i = 0; i < 32; i++)
 		cmd[i] = '\0';
 	//get the command line
+	printf(" > ");
 	getline(&cmd, &buff_size, stdin);
 	//make sure there's no trailing newline
 	j = 0;
@@ -210,6 +215,14 @@ int		idx_atoi(char *index_str)
 	if (*index_str >= 'a' && *index_str <= 'z')
 		return (*index_str - 'a');
 	return (atoi(index_str));
+}
+
+void	cmd_rf(char *filename)
+{
+	if (read_file(g_tets, filename) < 0)
+		printf("An error occurred while attempting to read the requested file.\n");
+	else
+		printf("File reading completed.\n");
 }
 
 void	cmd_move(int index, int x, int y)

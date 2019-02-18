@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 17:57:59 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 21:12:17 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/17 22:31:10 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int		process_cmd(char **words);
 void	cmd_overlaps_all(void);
 void	cmd_move(int index, int x, int y);
 int		idx_atoi(char *index_str);
+void	cmd_rf(char *filename);
 
 
 #endif

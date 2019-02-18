@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 17:02:49 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 17:45:39 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/17 22:37:34 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,33 +49,40 @@ int		get_next_tet(int fd)
 	return (identify(ret_tet));
 }
 
-/*
-int     main(int ac, char **av)
+int		read_file(unsigned short *tets, char *filename)
 {
-    int fd;
+	int fd;
     int n;
 	int id;
-	unsigned short arr[26];
 
-    if (ac != 2)
-        return (0);
-    fd = open(av[1], O_RDONLY);
-    n = 0;
-	printf("62\n");
-    while ((id = get_next_tet(fd)) >= 0)
-    {
-		printf("n=%i\n", n);
-        arr[n++] = id;
-		if (id < 0)
+	fd = open(filename, O_RDONLY);
+	if (fd > 0)
+	{
+		n = 0;
+		while ((id = get_next_tet(fd)) >= 0)
 		{
-			if (id == -1)
-   	    		printf("unrecognized tetrimino\n");
-			else if (id == -2)
-				printf("error\n");
+			if (id < 0)
+			{
+				if (id == -1)
+				{
+					printf("unrecognized tetrimino\n");
+					return (-1);
+				}
+				else if (id == -2)
+				{
+					printf("error\n");
+					return (-2);
+				}
+			}
+			else
+			{
+				tets[n] = (unsigned short)id;
+				tets[n] |= TET_ACTIVE_BIT;
+				printf("identified shape id=%i\n", id);
+				n++;
+			}
 		}
-		printf("identified shape id=%i\n", id);
-		print_shape(g_shapes[id]);
-		printf("\n");
-    }
-	return (0);
-}*/
+		close(fd);
+	}
+	return (1);
+}
