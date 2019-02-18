@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 17:02:49 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/16 17:35:55 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/17 17:45:39 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "shape.h"
-#include "test_functions.h"
+#include "testing.h"
 
 int		get_next_tet(int fd)
 {
@@ -49,6 +49,7 @@ int		get_next_tet(int fd)
 	return (identify(ret_tet));
 }
 
+/*
 int     main(int ac, char **av)
 {
     int fd;
@@ -77,4 +78,4 @@ int     main(int ac, char **av)
 		printf("\n");
     }
 	return (0);
-}
+}*/

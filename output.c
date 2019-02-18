@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 13:03:04 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 15:34:25 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/17 18:22:48 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 #include <stdio.h>
 #include "output.h"
 #include "shape.h"
-
+#include "tetrimino.h"
+#include "testing.h"
 
 void	write_tet_to_square(unsigned short tet, unsigned char square_size,
 			char *square, char tet_letter)
@@ -65,7 +66,13 @@ void	print_square(unsigned short *tets, unsigned char num_tets,
 	i = -1;
 	tet_letter = 'A';
 	while (++i < num_tets)
-		write_tet_to_square(tets[i], square_size, out, tet_letter++);
+	{
+		if (in_x_bounds(tets[i], square_size) && in_y_bounds(tets[i],
+					square_size))
+			write_tet_to_square(tets[i], square_size, out, tet_letter++);
+		else
+			printf("tet %i is not in bounds, skipping.\n", i);
+	}
 	write(1, out, data_size);
 	free(out);
 }

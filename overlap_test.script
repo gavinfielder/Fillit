@@ -1,0 +1,86 @@
+silent
+# this comment does not appear in stdout
+@ this comment does appear in stdout
+reset
+size 7
+set A 12 2 2
+set B 7 0 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+/
+@ Moving to next line...
+/
+/
+set B 7 0 1
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+/
+@ Moving down a bit more...
+/
+/
+set B 7 0 4
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+/
+move B 1 0
+p
+overlaps A B
+q

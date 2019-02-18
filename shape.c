@@ -6,11 +6,12 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 13:50:13 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 13:20:50 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/17 17:50:16 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shape.h"
+#include "tetrimino.h"
 #include <stddef.h>
 
 const unsigned short g_shapes[19] = {
