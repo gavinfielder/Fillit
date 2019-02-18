@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 17:04:32 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 22:48:05 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/18 00:16:48 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "testing.h"
 #include "libft.h"
 #include "input.h"
+#include "backtracking.h"
 
 static unsigned short	g_tets[26];
 static unsigned short	grid_size;
@@ -55,6 +56,7 @@ void	cmd_help()
 	printf("    move [index] [x] [y]	moves the given tetrimino by the requested amount\n");
 	printf("    show [index]		print information about the given tetrimino\n");
 	printf("    rf [filename]		reads tetriminos from file\n");
+	printf("    solve				calls the solving algorithm\n");
 	printf("    size [size]			set the grid size\n");
 	printf("    print / p			print the grid\n");
 	printf("    del [index]			delete the given tetrimino\n");
@@ -85,6 +87,8 @@ int		process_cmd(char **words)
 		cmd_show(idx_atoi(words[1]));
 	else if (ft_strequ(words[0], "size"))
 		cmd_size(atoi(words[1]));
+	else if (ft_strnequ(words[0], "solve", 5))
+		cmd_solve();
 	else if (ft_strnequ(words[0], "print", 5) || ft_strnequ(words[0], "p", 1))
 		cmd_print();
 	else if (ft_strequ(words[0], "del"))
@@ -223,6 +227,15 @@ void	cmd_rf(char *filename)
 		printf("An error occurred while attempting to read the requested file.\n");
 	else
 		printf("File reading completed.\n");
+}
+
+void	cmd_solve(void)
+{
+	unsigned short result = backtracking(g_tets, 0, init_pos(), grid_size);
+	if (result == 1)
+		printf("Success\n");
+	else
+		printf("Error while solving.\n");
 }
 
 void	cmd_move(int index, int x, int y)

@@ -1,11 +1,24 @@
-// void				set_pos(unsigned short tet, unsigned short x, unsigned short y);
-#include <string.h>
-#define X pos[0]
-#define Y pos[1]
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   backtracking.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/17 23:40:19 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/18 00:20:10 by gfielder         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int                 *pos(void)
+#include "backtracking.h"
+#include <string.h>
+#include "testing.h"
+#include "shape.h"
+#include "tetrimino.h"
+
+int                 *init_pos(void)
 {
-    int ret[2];
+    int *ret = malloc(2 * sizeof(int));
     
     ret[0] = 0;
     ret[1] = 0;
@@ -14,7 +27,7 @@ int                 *pos(void)
 
 int                 *pos(int pos[2], unsigned short grid_size) // update the position, consider logical assumptions with regard to id, return NULL if a greater grid_size is needed
 {
-    int ret[2];
+    int *ret = malloc(2 * sizeof(int));
 
     ret[0] = pos[0] + 1;
     ret[1] = pos[1] + 1;
@@ -28,14 +41,13 @@ int                 *pos(int pos[2], unsigned short grid_size) // update the pos
     return (ret);
 }
 
-unsigned short		overlaps(unsigned short tet1, unsigned short tet2);
-
-unsigned short      validate(unsigned short arr[26], int n, int pos[2])
+unsigned short      validate(unsigned short arr[26], int n/*, int pos[2]*/)
 {
     int i;
     unsigned short i_temp;
     unsigned short n_temp;
 
+	i = 0;
     while (i < n)
     {
         i_temp = arr[i];
@@ -46,13 +58,13 @@ unsigned short      validate(unsigned short arr[26], int n, int pos[2])
     return (1);
 }
 
-unsigned short      backtracking(unsigned short arr[26], int n, int pos[2], unsigned short grid_size) // n is zero based
+unsigned short      backtracking(unsigned short *arr, int n, int pos[2], unsigned short grid_size) // n is zero based
 {
     if (!(pos))
-        pos = p_init();
+        pos = init_pos();
     if (!(arr[n + 1]))
         return (1); // finished backtracking
-    if (validate(arr, n, pos)) // create please
+    if (validate(arr, n/*, pos*/)) // create please
     {
         set_pos(&arr[n], X, Y);
         if (backtracking(arr, n + 1, pos, grid_size))
