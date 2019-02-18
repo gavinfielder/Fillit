@@ -6,7 +6,7 @@
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 17:04:32 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/18 00:16:48 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/18 00:25:45 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -231,6 +231,9 @@ void	cmd_rf(char *filename)
 
 void	cmd_solve(void)
 {
+	printf("Solving is currently disabled.\n");
+	return ;
+
 	unsigned short result = backtracking(g_tets, 0, init_pos(), grid_size);
 	if (result == 1)
 		printf("Success\n");
