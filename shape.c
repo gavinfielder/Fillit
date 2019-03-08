@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shape.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: andrmart <andrmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 13:50:13 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 17:50:16 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/21 13:38:03 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shape.h"
-#include "tetrimino.h"
-#include <stddef.h>
+#include "fillit.h"
 
 const unsigned short g_shapes[19] = {
 	0xF000, 0x8888, 0x6C00, 0x8C40, 0x4C80,
@@ -21,7 +19,7 @@ const unsigned short g_shapes[19] = {
 	0x88C0, 0x2E00, 0xC440, 0xE800
 };
 
-unsigned short		horiz_shift(unsigned short shape, unsigned short x)
+static unsigned short		horiz_shift(unsigned short shape, unsigned short x)
 {
 	const unsigned short	hshift_mask[] = {0xEEEE, 0xCCCC, 0x8888};
 
@@ -35,7 +33,7 @@ unsigned short		horiz_shift(unsigned short shape, unsigned short x)
 	return (shape);
 }
 
-unsigned short		vert_shift(unsigned short shape, unsigned short y)
+static unsigned short		vert_shift(unsigned short shape, unsigned short y)
 {
 	if (y > 3)
 		return (0x0000);
@@ -46,43 +44,11 @@ unsigned short		vert_shift(unsigned short shape, unsigned short y)
 	return (shape);
 }
 
-unsigned short		overlaps(unsigned short tet1, unsigned short tet2)
-{
-	unsigned short	tet1_dim;
-	unsigned short	tet2_dim;
-	unsigned short	tet1_shape;
-	unsigned short	tet2_shape;
-
-	tet1_dim = TET_GET_X(tet1);
-	tet2_dim = TET_GET_X(tet2);
-	tet1_shape = g_shapes[tet1 & TET_ID_MASK];
-	tet2_shape = g_shapes[tet2 & TET_ID_MASK];
-	if (tet1_dim > tet2_dim)
-	{
-		tet1_shape = horiz_shift(tet1_shape, tet1_dim - tet2_dim);
-		if (!tet1_shape)
-			return (0);
-	}
-	else
-	{
-		tet2_shape = horiz_shift(tet2_shape, tet2_dim - tet1_dim);
-		if (!tet2_shape)
-			return (0);
-	}
-	tet1_dim = TET_GET_Y(tet1);
-	tet2_dim = TET_GET_Y(tet2);
-	if (tet1_dim > tet2_dim)
-		tet1_shape = vert_shift(tet1_shape, tet1_dim - tet2_dim);
-	else
-		tet2_shape = vert_shift(tet2_shape, tet2_dim - tet1_dim);
-	return (tet1_shape & tet2_shape);
-}
-
-unsigned short		str_to_shape(char *data)
+static unsigned short		str_to_shape(char *data)
 {
 	unsigned short	shape;
 	unsigned int	i;
-	
+
 	i = 0;
 	shape = 0;
 	while (i < 16)
@@ -94,17 +60,45 @@ unsigned short		str_to_shape(char *data)
 	return (shape);
 }
 
-int					identify(char *data)
+unsigned short				overlaps(unsigned short tet1, unsigned short tet2)
+{
+	unsigned short	tet1_shape;
+	unsigned short	tet2_shape;
+
+	tet1_shape = g_shapes[tet1 & TET_ID_MASK];
+	tet2_shape = g_shapes[tet2 & TET_ID_MASK];
+	if ((tet1 & TET_X_MASK) > (tet2 & TET_X_MASK))
+	{
+		if (!(tet1_shape = horiz_shift(tet1_shape,
+				(((tet1 & TET_X_MASK) - (tet2 & TET_X_MASK)) >> TET_X_SHFT))))
+			return (0);
+	}
+	else
+	{
+		if (!(tet2_shape = horiz_shift(tet2_shape,
+				(((tet2 & TET_X_MASK) - (tet1 & TET_X_MASK)) >> TET_X_SHFT))))
+			return (0);
+	}
+	if ((tet1 & TET_Y_MASK) > (tet2 & TET_Y_MASK))
+		tet1_shape = vert_shift(tet1_shape,
+				(((tet1 & TET_Y_MASK) - (tet2 & TET_Y_MASK)) >> TET_Y_SHFT));
+	else
+		tet2_shape = vert_shift(tet2_shape,
+				(((tet2 & TET_Y_MASK) - (tet1 & TET_Y_MASK)) >> TET_Y_SHFT));
+	return (tet1_shape & tet2_shape);
+}
+
+int							identify(char *data)
 {
 	unsigned short	shape;
 	int				i;
 
 	if (data == NULL)
-		return (-2);
+		return (INVALID_SHAPE);
 	i = -1;
 	while (++i < 16)
 		if (data[i] != '.' && data[i] != '#')
-			return (-2);
+			return (INVALID_SHAPE);
 	shape = str_to_shape(data);
 	i = 0;
 	while (!(shape & SHAPE_ROW1) && i++ < 4)
@@ -116,5 +110,5 @@ int					identify(char *data)
 	while (++i <= 18)
 		if (shape == g_shapes[i])
 			return (i);
-	return (-1);
+	return (INVALID_SHAPE);
 }

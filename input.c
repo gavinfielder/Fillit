@@ -3,86 +3,86 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: andrmart <andrmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 17:02:49 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/17 22:37:34 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/20 20:57:59 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h>
-#include <sys/uio.h>
+#include "fillit.h"
 #include <unistd.h>
 #include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include "shape.h"
-#include "testing.h"
 
-int		get_next_tet(int fd)
+int		get_next_tet(int fd, int *id)
 {
-    char buff[21];
-    char ret_tet[16];
-    int ret;
-	int i;
+	char	buff[21];
+	char	converted_input[16];
+	int		status;
+	int		read_ret;
 
-    if ((ret = read(fd, buff, 21)) == 0)
-		return (-1);
-	else if (ret == -1)
-		return (-2);
-	else if (ret < 19)
-		return (-2);
+	status = INPUT_OK;
+	ft_bzero(buff, 21);
+	read_ret = read(fd, buff, 21);
+	if (read_ret < 20)
+		return (INPUT_ERR);
+	status = convert_input(buff, converted_input);
+	if (status == INPUT_ERR)
+		return (INPUT_ERR);
+	*id = identify(converted_input);
+	if (*id < 0)
+		return (INPUT_ERR);
+	return (status);
+}
+
+int		convert_input(char *buff, char *ret_tet)
+{
+	int	i;
+
+	ft_bzero(ret_tet, 16);
 	i = -1;
-    while (++i < ret) //loop through all the read buffer
-    {
-        if ((i + 1) % 5 == 0) //on i = 4,9,14,19 validate that the character is \n
-        {
+	while (++i < 20)
+	{
+		if ((i + 1) % 5 == 0)
+		{
 			if (buff[i] != '\n')
-				return (-2);
-            continue;
-        }
-        ret_tet[i - (i + 1) / 5] = buff[i]; //on all other values, copy to ret_tet
-    }
-	if (ret == 21 && buff[20] != '\n') //validate that there is an extra newline after the tetrimino, if it has not ended
-		return (-2);
-	//ret_tet now holds the valid number of character in the valid organization
-	return (identify(ret_tet));
+				return (INPUT_ERR);
+			continue;
+		}
+		ret_tet[i - (i + 1) / 5] = buff[i];
+	}
+	if (buff[20] == '\0')
+		return (INPUT_EOF);
+	if (buff[20] == '\n')
+		return (INPUT_OK);
+	return (INPUT_ERR);
 }
 
 int		read_file(unsigned short *tets, char *filename)
 {
 	int fd;
-    int n;
+	int n;
 	int id;
+	int ret;
 
-	fd = open(filename, O_RDONLY);
-	if (fd > 0)
+	if ((fd = open(filename, O_RDONLY)) < 0)
+		return (INPUT_ERR);
+	id = -1;
+	ret = INPUT_OK;
+	n = 0;
+	while (1)
 	{
-		n = 0;
-		while ((id = get_next_tet(fd)) >= 0)
-		{
-			if (id < 0)
-			{
-				if (id == -1)
-				{
-					printf("unrecognized tetrimino\n");
-					return (-1);
-				}
-				else if (id == -2)
-				{
-					printf("error\n");
-					return (-2);
-				}
-			}
-			else
-			{
-				tets[n] = (unsigned short)id;
-				tets[n] |= TET_ACTIVE_BIT;
-				printf("identified shape id=%i\n", id);
-				n++;
-			}
-		}
-		close(fd);
+		ret = get_next_tet(fd, &id);
+		tets[n] = (unsigned short)id;
+		tets[n] |= TET_ACTIVE_BIT;
+		n++;
+		if (ret != INPUT_OK)
+			break ;
+		if (n == 26)
+			return (INPUT_ERR);
 	}
-	return (1);
+	close(fd);
+	if (ret == INPUT_EOF)
+		return (INPUT_OK);
+	return (INPUT_ERR);
 }

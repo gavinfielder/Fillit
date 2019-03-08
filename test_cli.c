@@ -3,22 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   test_cli.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: andrmart <andrmart@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/17 17:04:32 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/18 00:25:45 by gfielder         ###   ########.fr       */
+/*   Updated: 2019/02/22 15:02:24 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shape.h"
-#include "tetrimino.h"
-#include "output.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include "testing.h"
 #include "libft.h"
-#include "input.h"
-#include "backtracking.h"
+#include "fillit.h"
 
 static unsigned short	g_tets[26];
 static unsigned short	grid_size;
@@ -45,7 +41,7 @@ int		main(int argc, char **argv)
 	}
 	while (process_stdin());
 	return (0);
-} 
+}
 
 void	cmd_help()
 {
@@ -124,6 +120,8 @@ int		process_cmd(char **words)
 			printf("%s ", words[i]);
 		printf("\n");
 	}
+	else if (ft_strnequ(words[0], "next_pos", 8))
+		cmd_next_pos(idx_atoi(words[1]));
 	else
 		printf("Unrecognized command. See 'help' / '?'.\n");
 	return (1);
@@ -223,7 +221,7 @@ int		idx_atoi(char *index_str)
 
 void	cmd_rf(char *filename)
 {
-	if (read_file(g_tets, filename) < 0)
+	if (read_file(g_tets, filename) == INPUT_ERR)
 		printf("An error occurred while attempting to read the requested file.\n");
 	else
 		printf("File reading completed.\n");
@@ -231,11 +229,11 @@ void	cmd_rf(char *filename)
 
 void	cmd_solve(void)
 {
-	printf("Solving is currently disabled.\n");
-	return ;
+	//printf("Solving is currently disabled.\n");
+	//return ;
 
-	unsigned short result = backtracking(g_tets, 0, init_pos(), grid_size);
-	if (result == 1)
+	grid_size = increase_grid(g_tets, grid_size);
+	if (grid_size)
 		printf("Success\n");
 	else
 		printf("Error while solving.\n");
@@ -324,7 +322,7 @@ void	cmd_reset(void)
 {
 	for (int i = 0; i < 26; i++)
 		g_tets[i] = 0;
-	grid_size = 3;
+	grid_size = 2;
 	printf("tets and grid reset to default values.\n");
 }
 
@@ -369,6 +367,11 @@ void	cmd_show(int i)
 	}
 	print_shape(g_shapes[g_tets[i] & TET_ID_MASK]);
 	print_tet_listing(i);
+}
+
+void	cmd_next_pos(int i)
+{
+	i++;
 }
 
 void	print_tet_listing(int i)

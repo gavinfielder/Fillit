@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   backtracking.h                                     :+:      :+:    :+:   */
+/*   ft_strmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfielder <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/17 23:39:20 by gfielder          #+#    #+#             */
-/*   Updated: 2019/02/18 00:19:13 by gfielder         ###   ########.fr       */
+/*   Created: 2019/02/13 09:34:05 by gfielder          #+#    #+#             */
+/*   Updated: 2019/02/15 18:34:31 by gfielder         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BACKTRACKING_H
-# define BACKTRACKING_H
+#include <string.h>
+#include "libft.h"
 
-# define X pos[0]
-# define Y pos[1]
+char	*ft_strmap(char const *s, char (*f)(char))
+{
+	char	*r;
+	int		i;
 
-int                 *init_pos(void);
-int                 *pos(int pos[2], unsigned short grid_size);
-unsigned short      validate(unsigned short arr[26], int n/*, int pos[2]*/);
-unsigned short      backtracking(unsigned short arr[26], int n, int pos[2], unsigned short grid_size);
-
-#endif
+	if (s == NULL || f == NULL)
+		return (NULL);
+	r = ft_strnew(ft_strlen(s));
+	if (r == NULL)
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		r[i] = f(s[i]);
+		i++;
+	}
+	return (r);
+}
